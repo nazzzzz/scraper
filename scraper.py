@@ -2,19 +2,22 @@ import requests
 from bs4 import BeautifulSoup
 import sys
 
-def getDribbblePhotos(q):
-    links = []
+def getSlickDeals(q):
+    titles = []
 
-    baseUrl = "https://dribbble.com/search?q=" + q
+    baseUrl = "https://slickdeals.net/newsearch.php?src=SearchBarV2&q=" + q
     html = requests.get(baseUrl).text
     soup = BeautifulSoup(html,"html.parser")
 
-    images = soup.select(".dribbble-link picture source")
+    deals = soup.select(".dealWrapper .dealTitle")
 
-    for image in images:
-        imgUrl = image.get("srcset")
-        # print(imgUrl)
-        links.append(imgUrl)
+    for deal in deals:
+        dealTitle = deal.get("title")
+        titles.append(dealTitle)
+        print("---------------------------------------------------------------------")
+        print (dealTitle)
+        print("---------------------------------------------------------------------")
 
+    return titles
 
-    return links
+getSlickDeals(sys.argv[1])
